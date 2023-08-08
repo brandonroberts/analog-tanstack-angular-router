@@ -1,20 +1,40 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+
+import { Outlet, Router } from '@tanstack/angular-router';
 
 @Component({
   selector: 'app-root',
+  template: `
+    <a (click)="goHome()">Home</a> |
+    <a (click)="goAbout()">About</a> |
+    <a (click)="goNested()">Nested</a>
+
+    <br /><br />
+
+    <outlet></outlet>
+  `,
+  imports: [Outlet],
   standalone: true,
-  imports: [RouterOutlet],
-  template: ` <router-outlet></router-outlet> `,
   styles: [
     `
-      :host {
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 2rem;
-        text-align: center;
+      a {
+        text-decoration: underline;
       }
     `,
   ],
 })
-export class AppComponent {}
+export class AppComponent {
+  router = inject(Router);
+
+  goHome() {
+    this.router.navigate({ to: '/'});
+  }
+
+  goAbout() {
+    this.router.navigate({ to: '/about' });
+  }
+
+  goNested() {
+    this.router.navigate({ to: '/parent/$id', params: { id: "child" } });
+  }
+}
