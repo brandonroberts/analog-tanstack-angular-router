@@ -5,7 +5,7 @@ import {
   Type,
   ViewContainerRef,
 } from '@angular/core';
-import { RouteMatch } from '@tanstack/router';
+import { RouteMatch } from '@tanstack/router-core';
 import { filter, Subject, takeUntil, tap } from 'rxjs';
 
 import {
@@ -36,7 +36,8 @@ export class Outlet {
         tap((rs) => {
           console.log(rs, rs.matches);
           const matchesToRender = this.getMatch(rs.matches.slice(1));
-          const currentCmp = this.router.getRoute(matchesToRender.routeId).options.component;
+          const route = this.router.getRoute(matchesToRender.routeId);
+          const currentCmp = (route && route.options.component ? route.options.component({} as any) : undefined) as Type<any>;
 
           if (this.cmp !== currentCmp) {
             this.vcr.clear();

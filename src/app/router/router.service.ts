@@ -8,7 +8,7 @@ import {
   Router as TanStackRouter,
   RouterState,
   NavigateOptions
-} from '@tanstack/router';
+} from '@tanstack/router-core';
 import { BehaviorSubject, map } from 'rxjs';
 
 export type RouteObject = {
